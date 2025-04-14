@@ -1,0 +1,31 @@
+<div th:fragment="table(data, columns, urlPrefix)">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th th:each="column : ${columns}" th:if="${column != 'id'}" th:text="${column}"></th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, iterStat : ${data}">
+            <td th:text="${iterStat.count}"></td>
+            <!-- Dynamiczne wyświetlanie kolumn -->
+            <td th:each="column : ${columns}"
+                th:if="${column != 'id'}"
+                th:text="${item[column]}">
+            </td>
+            <td>
+                <a th:href="@{|${urlPrefix}/edit/${item.id}|}" class="btn btn-primary btn-sm btn-block">Edit</a>
+                <a th:href="@{|${urlPrefix}/${item.id}|}" class="btn btn-info btn-sm btn-block">Details</a>
+                <a th:href="@{|${urlPrefix}/delete/${item.id}|}" class="btn btn-danger btn-sm btn-block"
+                   onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(data)}">
+            <td th:attr="colspan=${#lists.size(columns) + 2}" class="text-center">No data to display</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

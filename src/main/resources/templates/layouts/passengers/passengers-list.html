@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passengers List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">FLIGHT BOOKING</a>
+
+            <!-- Przyciski po prawej -->
+<!--            <div class="d-flex ms-auto">-->
+<!--                <form th:action="@{/logout}" method="post" class="d-inline">-->
+<!--                    <button type="submit" class="btn btn-primary shadow-sm">Logout</button>-->
+<!--                </form>-->
+<!--            </div>-->
+        </div>
+    </nav>
+
+    <div class="container mt-2">
+        <h1 class="text-center">PASSENGERS LIST</h1>
+
+        <!-- Przyciski Akcji dodania nowego uzytkownika -->
+        <div class="mb-2 d-flex justify-content-end">
+            <a href="/passengers/create" class="btn btn-success">ADD NEW PASSENGER</a>
+        </div>
+
+        <!-- Tabela z passengerami -->
+        <div th:if="${passengers.size() > 0}">
+            <div th:replace="~{layouts/table :: table(${passengers}, ${columns}, '/passengers')}"></div>
+        </div>
+
+        <div th:unless="${passengers.size() > 0}">
+            <span>No passengers found!</span>
+        </div>
+    </div>
+
+    <div th:replace="~{layouts/footer::footer}"></div>
+
+</body>
+</html>

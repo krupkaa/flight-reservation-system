@@ -1,0 +1,10 @@
+<a th:fragment="paging(content, pageNum, label, tooltip)"
+   class="page-link"
+   th:with="queryParams=${'page=' + pageNum + '&size=' + size
+                          + (keyword != null && keyword != '' ? '&keyword=' + keyword : '')
+                          + (sortField != null ? '&sort=' + sortField + ',' + sortDirection : '')
+                          + (status != null && status != '' ? '&status=' + status : '')}"
+   th:href="@{${content} + '?' + ${queryParams}}"
+   th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>

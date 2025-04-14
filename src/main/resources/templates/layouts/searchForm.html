@@ -1,0 +1,59 @@
+<div th:fragment="searchForm(actionUrl, keyword, statuses, status, pageSizes, size, priorities, priority)">
+    <div class="my-3">
+        <form th:action="@{${actionUrl}}" id="searchForm" method="get">
+            <div class="row d-flex align-items-center">
+                <!-- Pole wyszukiwania -->
+                <div class="col-md-4 mt-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input id="searchField" type="search" name="keyword" th:value="${keyword}"
+                               class="form-control" placeholder="Enter search term">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wybór statusu -->
+                <div class="col-md-3 mt-2">
+                    <select name="status" class="custom-select" id="status">
+                        <option value="">All statuses</option>
+                        <option th:each="statusItem : ${statuses}"
+                                th:value="${statusItem}"
+                                th:text="${statusItem.name()}"
+                                th:selected="${statusItem == status}"></option>
+                    </select>
+                </div>
+
+                <!-- Wybór priorytetu (tylko jeśli istnieje lista priorities) -->
+                <div class="col-md-3 mt-2" th:if="${priorities}">
+                    <select name="priority" class="custom-select" id="priority">
+                        <option value="">All priorities</option>
+                        <option th:each="priorityItem : ${priorities}"
+                                th:value="${priorityItem}"
+                                th:text="${priorityItem.name()}"
+                                th:selected="${priorityItem == priority}"></option>
+                    </select>
+                </div>
+
+                <!-- Liczba elementów na stronie -->
+                <div class="col-md-2 mt-2 d-flex align-items-center">
+                    <label for="pageSize" class="mr-2 mb-0">Items per page:</label>
+                    <select name="size" class="custom-select w-auto" id="pageSize">
+                        <option th:each="s : ${pageSizes}"
+                                th:value="${s}"
+                                th:text="${s}"
+                                th:selected="${s == size}"></option>
+                    </select>
+                </div>
+
+                <!-- Przycisk czyszczenia -->
+                <div class="col-md-1 mt-2">
+                    <button id="btnClear" type="button" class="btn btn-info" onclick="clearFilters()">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
