@@ -20,7 +20,7 @@ public class FlightEntity {
     private String arrivalAirport;
 
     @Column(name = "flight_duration", nullable = false)
-    private Duration duration;
+    private long duration;
 
     @Column(name = "flight_number", nullable = false, length = 10)
     private String flightNumber;
@@ -29,10 +29,14 @@ public class FlightEntity {
     //there - T
     //back - B
     //there and back - T/P)
-    private String direction;
+    private DirectionEnum direction;
 
     @Column(name = "seat_number")
     private String seatNumber;
+
+    public enum DirectionEnum {
+        THERE, BACK, THERE_AND_BACK
+    }
 
 
 }

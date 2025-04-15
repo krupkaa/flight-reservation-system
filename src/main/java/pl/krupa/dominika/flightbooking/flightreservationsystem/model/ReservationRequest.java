@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class ReservationRequest {
 
+    private Long id;
+
     @NotBlank
     @Size(max = 20)
     private String reservationNumber;

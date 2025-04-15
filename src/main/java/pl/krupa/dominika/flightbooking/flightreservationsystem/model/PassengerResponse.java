@@ -17,7 +17,6 @@ public class PassengerResponse {
     private String phoneNumber;
 
 
-    //wszystkie pola z encji
     public static List<String> getColumnNamesMethod() {
         return Arrays.stream(PassengerResponse.class.getDeclaredFields())
                 .map(Field::getName)

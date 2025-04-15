@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Flight</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2 class="text-center" th:text="${flight.id != null} ? 'Edit Flight' : 'Create Flight'"></h2>
+
+        <form th:with="action=${flight.id != null} ? '/flights/edit/' + ${flight.id} : '/flights/create'"
+              th:action="@{${action}}" method="post" th:object="${flight}">
+
+            <!-- Departure Airport -->
+            <div class="form-group mb-3">
+                <label>
+                    Departure Airport <span class="text-danger">*</span>
+                </label>
+                <input type="text"
+                       th:field="*{departureAirport}"
+                       th:classappend="${#fields.hasErrors('departureAirport')} ? 'is-invalid'"
+                       class="form-control"
+                       maxlength="4"
+                       required>
+                <div th:errors="*{departureAirport}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Arrival Airport -->
+            <div class="form-group mb-3">
+                <label>
+                    Arrival Airport <span class="text-danger">*</span>
+                </label>
+                <input type="text"
+                       th:field="*{arrivalAirport}"
+                       th:classappend="${#fields.hasErrors('arrivalAirport')} ? 'is-invalid'"
+                       class="form-control"
+                       maxlength="4"
+                       required>
+                <div th:errors="*{arrivalAirport}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Flight Duration -->
+            <div class="form-group mb-3">
+                <label>
+                    Flight Duration (minutes) <span class="text-danger">*</span>
+                </label>
+                <input type="number"
+                       th:field="*{duration}"
+                       th:classappend="${#fields.hasErrors('duration')} ? 'is-invalid'"
+                       class="form-control"
+                       min="0"
+                       required>
+                <div th:errors="*{duration}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Flight Number -->
+            <div class="form-group mb-3">
+                <label>
+                    Flight Number <span class="text-danger">*</span>
+                </label>
+                <input type="text"
+                       th:field="*{flightNumber}"
+                       th:classappend="${#fields.hasErrors('flightNumber')} ? 'is-invalid'"
+                       class="form-control"
+                       maxlength="10"
+                       required>
+                <div th:errors="*{flightNumber}" class="invalid-feedback"></div>
+            </div>
+
+            <!-- Direction -->
+            <div class="form-group">
+                <label for="direction" class="form-label">Direction</label>
+                <select id="direction" class="form-select" th:field="*{direction}" required>
+                    <option value="" disabled selected>Select direction</option>
+                    <option th:each="direction : ${directions}"
+                            th:value="${direction}"
+                            th:text="${direction.name()}">
+
+                    </option>
+                </select>
+            </div>
+
+
+            <!-- Seat Number -->
+            <div class="form-group mb-3">
+                <label>
+                    Seat Number
+                </label>
+                <input type="text"
+                       th:field="*{seatNumber}"
+                       th:classappend="${#fields.hasErrors('seatNumber')} ? 'is-invalid'"
+                       class="form-control">
+                <div th:errors="*{seatNumber}" class="invalid-feedback"></div>
+            </div>
+
+            <div th:insert="~{layouts/alerts::alerts}"></div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <span th:text="${flight.id != null} ? 'Edit Flight' : 'Create Flight'"></span>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

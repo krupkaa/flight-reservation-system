@@ -7,7 +7,7 @@ import pl.krupa.dominika.flightbooking.flightreservationsystem.entity.FlightEnti
 import java.util.Optional;
 
 @Repository
-public interface FlightRepository extends JpaRepository<FlightRepository, Long> {
+public interface FlightRepository extends JpaRepository<FlightEntity, Long> {
 
     Optional<FlightEntity> findById(Long flightId);
 

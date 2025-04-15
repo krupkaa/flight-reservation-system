@@ -12,6 +12,8 @@ public interface FlightMapper {
 
     FlightEntity toEntity(FlightRequest request);
     FlightResponse toFlightResponse(FlightEntity entity);
+
+    FlightRequest toFlightRequest(FlightResponse flightResponse);
     @Mapping(target = "id", ignore = true)
     void updateEntityFromRequest(FlightRequest request, @MappingTarget FlightEntity entity);
 }

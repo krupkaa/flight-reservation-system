@@ -11,6 +11,7 @@ import pl.krupa.dominika.flightbooking.flightreservationsystem.service.FlightSer
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -38,7 +39,9 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<FlightResponse> getAllFlights() {
         List<FlightEntity> flightEntities = flightRepository.findAll();
-        return flightMapper.toFlightResponse(flightEntities);
+        return flightEntities.stream()
+                .map(flightMapper::toFlightResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

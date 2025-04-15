@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ReservationResponse {
 
+    private Long id;
     private String reservationNumber;
     private String flightNumber;
     private String selectedSeat;

@@ -12,7 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.entity.FlightEntity;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.FlightMapper;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.PassengerMapper;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.model.FlightRequest;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.model.FlightResponse;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerRequest;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerResponse;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.service.FlightService;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.service.PassengerService;
 
 import java.util.List;
 
@@ -23,142 +31,95 @@ public class FlightController {
 
     @Autowired
     private FlightService flightService;
-}
-
-
-public class ProjectController {
 
     @Autowired
-    private ProjectService projectService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectController.class);
+    private FlightMapper flightMapper;
 
-
-    //wyswietla formularz
     @GetMapping("/create")
-    public String showCreateProjectForm(Model model) {
-        model.addAttribute("project", new ProjectRequest());
-        model.addAttribute("statuses", ProjectStatus.values());
-
-        return "project/project-form";
+    public String showCreateFlightForm(Model model) {
+        model.addAttribute("flight", new FlightRequest());
+        model.addAttribute("directions", FlightEntity.DirectionEnum.values());
+        return "flight/flight-form";
     }
 
     @PostMapping("/create")
-    public String createProject(@ModelAttribute("project") @Valid ProjectRequest request,
-                                BindingResult result,
-                                Model model,
-                                RedirectAttributes redirectAttributes) {
-
+    public String createFlight(@ModelAttribute("flight") @Valid FlightRequest request,
+                                  BindingResult result,
+                                  Model model,
+                                  RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            model.addAttribute("statuses", ProjectStatus.values());
-            return "project/project-form";
+            model.addAttribute("directions", FlightEntity.DirectionEnum.values());
+            return "flight/flight-form";
         }
 
         try {
-            ProjectResponse response = projectService.createProject(request);
+            FlightResponse response = flightService.createFlight(request);
             model.addAttribute("response", response);
-            redirectAttributes.addFlashAttribute("successMessage", "Project has been successfully added!");
-            return "redirect:/projects";
-
+            redirectAttributes.addFlashAttribute("successMessage", "Flight has been successfully added!");
+            return "redirect:/flights";
         } catch (IllegalArgumentException | ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            LOGGER.error("Error validation or wrong argument saving project", e);
-
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Unexpected error occurred. Please try again.");
-            LOGGER.error("Error saving project", e);
         }
-        return "project/project-form";
+        return "flight/flight-form";
     }
-
 
     @GetMapping()
-    public String getAllProjects(Model model,
-                                 @RequestParam(required = false) String keyword,
-                                 @RequestParam(required = false) ProjectStatus status,
-                                 @RequestParam(defaultValue = "1") int page,
-                                 @RequestParam(defaultValue = "6") int  size,
-                                 @RequestParam(defaultValue = "id,asc") String[] sort) {
-
-        Page<ProjectResponse> pageProjects = projectService.getAllProjects(keyword, status, page, size, sort);
-        List<ProjectResponse> projects = pageProjects.getContent();
-
-        model.addAttribute("columns", ProjectResponse.getColumnNamesAllMethod());
-        model.addAttribute("statuses", ProjectStatus.values());
-        model.addAttribute("projects", projects);
-
-        model.addAttribute("currentPage", pageProjects.getNumber() + 1);
-        model.addAttribute("totalItems", pageProjects.getTotalElements());
-        model.addAttribute("totalPages", pageProjects.getTotalPages());
-        model.addAttribute("pageSizes", List.of(5, 10, 15, 20));
-        model.addAttribute("size", size);
-        model.addAttribute("sortField", sort[0]);
-        model.addAttribute("sortDirection", sort[1]);
-
-        if (keyword != null) {
-            model.addAttribute("keyword", keyword);
-        }
-        if (status != null) {
-            model.addAttribute("status", status);
-        }
-
-        return "project/projects-list";
+    public String getAllFlights(Model model) {
+        List<FlightResponse> flights = flightService.getAllFlights();
+        model.addAttribute("flights", flights);
+        model.addAttribute("columns", FlightResponse.getColumnNamesMethod());
+        model.addAttribute("directions", FlightEntity.DirectionEnum.values());
+        return "flight/flights-list";
     }
 
+    @GetMapping("/{FlightId}")
+    public String getFlightDetails(@PathVariable Long flightId,
+                                      Model model) {
+        FlightResponse flightResponse = flightService.getFlightById(flightId);
 
-    @GetMapping("/edit/{project_id}")
-    public String editProject(@PathVariable Long project_id,
-                              Model model) {
+        model.addAttribute("flight", flightResponse);
+        model.addAttribute("columns", FlightResponse.getColumnNamesMethod());
 
-        ProjectResponse project = projectService.getProjectById(project_id);
-
-        model.addAttribute("project", project);
-        model.addAttribute("statuses", ProjectStatus.values());
-
-        return "project/project-form";
+        return "flight/flight-details";
     }
 
+    @GetMapping("/edit/{flightId}")
+    public String editFlight(@PathVariable Long flightId, Model model) {
+        FlightResponse flightResponse = flightService.getFlightById(flightId);
+        FlightRequest flightRequest = flightMapper.toFlightRequest(flightResponse);
+        model.addAttribute("flight", flightRequest);
+        model.addAttribute("directions", FlightEntity.DirectionEnum.values());
+        return "flight/flight-form";
+    }
 
-    @PostMapping("/edit/{projectId}")
-    public String updateProject(@PathVariable Long projectId,
-                                @ModelAttribute("project") ProjectRequest request,
-                                RedirectAttributes redirectAttributes,
-                                Model model) {
+    @PostMapping("/edit/{flightId}")
+    public String updateFlight(@PathVariable Long flightId,
+                                  @ModelAttribute("flight") FlightRequest request,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
         try {
-            projectService.updateProject(request, projectId);
-            redirectAttributes.addFlashAttribute("successMessage", "Project has been successfully updated!");
-            return "redirect:/projects";
+            FlightResponse response = flightService.updateFlight(request, flightId);
+            model.addAttribute("flight", response);
+            redirectAttributes.addFlashAttribute("successMessage", "Flight has been successfully updated!");
+            return "redirect:/flights";
         } catch (Exception e) {
-            request.setId(projectId);
-
-            model.addAttribute("errorMessage", "An error occurred while updating the project. Please try again...");
-            model.addAttribute("project", request);
-            model.addAttribute("statuses", ProjectStatus.values());
-            return "project/project-form";
+            redirectAttributes.addFlashAttribute("errorMessage", "An error while updating the passenger. Please try again ...");
+            return "redirect:/flight/edit/" + flightId;
         }
     }
 
-    @GetMapping("/{project_id}")
-    public String getProjectDetails(@PathVariable Long project_id,
-                                    Model model) {
-        ProjectResponse project = projectService.getProjectById(project_id);
-
-        model.addAttribute("project", project);
-        model.addAttribute("columns", ProjectResponse.getColumnNamesDetailsMethod());
-
-        return "project/project-details";
-    }
-
-    @GetMapping("/delete/{project_id}")
-    public String deleteProject(@PathVariable Long project_id,
-                                RedirectAttributes redirectAttributes) {
-
+    @GetMapping("/delete/{flightId}")
+    public String deleteFlight(@PathVariable Long flightId,
+                                  RedirectAttributes redirectAttributes) {
         try {
-            projectService.deleteProject(project_id);
-            redirectAttributes.addFlashAttribute("successMessage", "Project has been successfully deleted!");
+            flightService.deleteFlight(flightId);
+            redirectAttributes.addFlashAttribute("successMessage", "Flight has been successfully deleted!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while deleting the project. Please try again.");
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while deleting the passenger. Please try again");
         }
-
-        return "redirect:/projects";
+        return "redirect:/flights";
     }
 }
+
