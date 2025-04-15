@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class PassengerRequest {
 
+    private Long id;
+
     @NotBlank
     @Size(max = 50)
     private String firstName;

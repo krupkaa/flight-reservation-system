@@ -8,6 +8,7 @@ import lombok.Data;
 public class PassengerEntity {
 
     @Id
+    @Column(name = "passenger_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
