@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand">FLIGHT BOOKING</a>
+    </div>
+</nav>
+
+<div class="container mt-2">
+    <h1 class="text-center">RESERVATIONS LIST</h1>
+
+    <!-- Przyciski Akcji dodania nowej rezerwacji -->
+    <div class="mb-2 d-flex justify-content-end">
+        <a href="/reservations/create" class="btn btn-success">ADD NEW RESERVATION</a>
+    </div>
+
+    <!-- Tabela z rezerwacjami -->
+    <div th:if="${passengers.size() > 0}">
+        <div th:replace="~{layouts/table :: table(${reservations}, ${columns}, '/reservations')}"></div>
+    </div>
+
+    <div th:unless="${reservations.size() > 0}">
+        <span>No reservations found!</span>
+    </div>
+</div>
+
+<div th:replace="~{layouts/footer::footer}"></div>
+
+</body>
+</html>

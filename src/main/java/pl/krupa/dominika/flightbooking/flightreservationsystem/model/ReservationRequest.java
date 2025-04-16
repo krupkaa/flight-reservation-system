@@ -1,6 +1,7 @@
 package pl.krupa.dominika.flightbooking.flightreservationsystem.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class ReservationRequest {
     private String flightNumber;
 
     @Size(max = 10)
+    @Pattern(regexp = "\\d{2}[A-J]", message = "Seat must be in format: two digits followed by a letter A-J (e.g. 01A, 10B)")
     private String selectedSeat;
 
     @NotBlank

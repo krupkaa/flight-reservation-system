@@ -14,25 +14,17 @@ public class ReservationEntity {
     @Column(name = "reservation_number", nullable = false, unique = true, length = 20)
     private String reservationNumber;
 
-    @Column(name = "flight_number", nullable = false, length = 20)
-    private String flightNumber;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", nullable = false)
+    private FlightEntity flight;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "passenger_id", nullable = false)
+    private PassengerEntity passenger;
 
     @Column(name = "selected_seat")
     private String selectedSeat;
 
-    @Column(name = "passenger_first_name", nullable = false, length = 50)
-    private String passengerFirstName;
-
-    @Column(name = "passenger_last_name", nullable = false, length = 50)
-    private String passengerLastName;
-
-    @Column(name = "passenger_email", nullable = false, length = 100)
-    private String passengerEmail;
-
-    @Column(name = "passenger_phone_number", nullable = false, length = 15)
-    private String passengerPhoneNumber;
-
     @Column(name = "has_flight_occurred", nullable = false)
     private boolean isDeparture;
-
 }
