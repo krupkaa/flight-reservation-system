@@ -11,7 +11,7 @@ public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reservation_number", nullable = false, unique = true, length = 20)
+    @Column(name = "reservation_number", nullable = false, unique = true)
     private String reservationNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,5 +26,5 @@ public class ReservationEntity {
     private String selectedSeat;
 
     @Column(name = "has_flight_occurred", nullable = false)
-    private boolean isDeparture;
+    private boolean hasDeparture;
 }

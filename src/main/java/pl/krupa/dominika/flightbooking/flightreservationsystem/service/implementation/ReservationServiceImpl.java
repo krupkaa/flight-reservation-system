@@ -18,6 +18,7 @@ import pl.krupa.dominika.flightbooking.flightreservationsystem.service.Reservati
 import pl.krupa.dominika.flightbooking.flightreservationsystem.validations.SelectedSeatValidation;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,7 +58,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationResponse createReservation(ReservationRequest request) {
-        // Sprawdzenie czy flight istnieje
         FlightEntity flight = flightRepository.findByFlightNumber(request.getFlightNumber())
                 .orElseThrow(() -> new FlightNotFoundException("Flight with number " + request.getFlightNumber() + " not found"));
 
@@ -69,6 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         // Mapowanie z request na entity
         ReservationEntity reservationEntity = reservationMapper.toReservationEntity(request, flight, passenger);
+        reservationEntity.setReservationNumber(UUID.randomUUID().toString().substring(0, 20).toUpperCase());
         reservationEntity = reservationRepository.save(reservationEntity);
 
         return reservationMapper.toReservationResponse(reservationEntity);
@@ -90,7 +91,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         selectedSeatValidation.validateSeatAvailability(request.getFlightNumber(), request.getSelectedSeat());
         // Mapowanie danych z requesta na istniejącą rezerwację
-        existingReservation = reservationMapper.updateEntityFromRequest(request, existingReservation, flight, passenger);
+        reservationMapper.updateEntityFromRequest(request, existingReservation, flight, passenger);
         reservationRepository.save(existingReservation);
 
         return reservationMapper.toReservationResponse(existingReservation);

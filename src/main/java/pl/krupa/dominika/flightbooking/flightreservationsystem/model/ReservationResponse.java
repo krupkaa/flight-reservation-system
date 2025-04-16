@@ -13,6 +13,6 @@ public class ReservationResponse {
     private String passengerLastName;
     private String passengerEmail;
     private String passengerPhoneNumber;
-    private boolean hasFlightOccurred;
+    private boolean departured;
 
 }

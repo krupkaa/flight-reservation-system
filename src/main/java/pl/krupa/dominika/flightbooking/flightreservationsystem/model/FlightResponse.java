@@ -13,5 +13,5 @@ public class FlightResponse {
     private String arrivalAirport;
     private long duration;
     private FlightEntity.DirectionEnum direction;
-    private String seatNumber;
+//    private String seatNumber;
 }

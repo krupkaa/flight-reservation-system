@@ -12,7 +12,7 @@ public class SelectedSeatValidation {
     private ReservationRepository reservationRepository;
 
     public void validateSeatAvailability(String flightNumber, String selectedSeat) {
-        boolean isSeatTaken = reservationRepository.existsByFlightFlightNumberAndSelectedSeat(flightNumber, selectedSeat);
+        boolean isSeatTaken = reservationRepository.existsByFlight_FlightNumberAndSelectedSeat(flightNumber, selectedSeat);
 
         if (isSeatTaken) {
             throw new SeatAlreadyReservedException("The selected seat " + selectedSeat + " is already reserved for flight " + flightNumber);

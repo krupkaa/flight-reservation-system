@@ -9,12 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.exception.FlightNotFoundException;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.exception.PassengerNotFoundException;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.ReservationMapper;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.ReservationRequest;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.ReservationResponse;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.service.ReservationService;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.service.implementation.MailServiceImpl;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.utils.ColumnNameUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -27,6 +31,9 @@ public class ReservationController {
 
     @Autowired
     private ReservationMapper reservationMapper;
+
+    @Autowired
+    private MailServiceImpl mailService;
 
     // Form for creating new reservation
     @GetMapping("/create")
@@ -46,10 +53,11 @@ public class ReservationController {
 
         try {
             ReservationResponse response = reservationService.createReservation(request);
+            mailService.sendMail(response.getPassengerEmail(), "RESERVATION FOR FLIGHT", "you do reservation");
             model.addAttribute("response", response);
             redirectAttributes.addFlashAttribute("successMessage", "Reservation has been successfully added!");
             return "redirect:/reservations";
-        } catch (IllegalArgumentException | ValidationException e) {
+        } catch (FlightNotFoundException | PassengerNotFoundException | IllegalArgumentException | ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Unexpected error occurred. Please try again.");
@@ -59,9 +67,10 @@ public class ReservationController {
 
     @GetMapping()
     public String getAllReservations(Model model) {
+        List<String> selectedColumns = Arrays.asList("reservationNumber", "flightNumber", "passengerEmail");
         List<ReservationResponse> reservations = reservationService.getAllReservations();
         model.addAttribute("reservations", reservations);
-        model.addAttribute("columns", ColumnNameUtils.getColumnNamesMethod(ReservationResponse.class));
+        model.addAttribute("columns", ColumnNameUtils.getColumnNamesSelectedMethod(ReservationResponse.class, selectedColumns));
         return "reservation/reservations-list";
     }
 

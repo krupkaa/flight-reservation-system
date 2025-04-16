@@ -6,5 +6,5 @@ import pl.krupa.dominika.flightbooking.flightreservationsystem.entity.Reservatio
 
 @Repository
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
-    boolean existsByFlightFlightNumberAndSelectedSeat(String flightNumber, String selectedSeat);
+    boolean existsByFlight_FlightNumberAndSelectedSeat(String flightNumber, String selectedSeat);
 }

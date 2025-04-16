@@ -28,5 +28,5 @@ public class FlightRequest {
 
     private FlightEntity.DirectionEnum direction;
 
-    private String seatNumber;
+//    private String seatNumber;
 }

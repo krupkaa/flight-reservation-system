@@ -86,17 +86,17 @@
             </div>
 
 
-            <!-- Seat Number -->
-            <div class="form-group mb-3">
-                <label>
-                    Seat Number
-                </label>
-                <input type="text"
-                       th:field="*{seatNumber}"
-                       th:classappend="${#fields.hasErrors('seatNumber')} ? 'is-invalid'"
-                       class="form-control">
-                <div th:errors="*{seatNumber}" class="invalid-feedback"></div>
-            </div>
+<!--            &lt;!&ndash; Seat Number &ndash;&gt;-->
+<!--            <div class="form-group mb-3">-->
+<!--                <label>-->
+<!--                    Seat Number-->
+<!--                </label>-->
+<!--                <input type="text"-->
+<!--                       th:field="*{seatNumber}"-->
+<!--                       th:classappend="${#fields.hasErrors('seatNumber')} ? 'is-invalid'"-->
+<!--                       class="form-control">-->
+<!--                <div th:errors="*{seatNumber}" class="invalid-feedback"></div>-->
+<!--            </div>-->
 
             <div th:insert="~{layouts/alerts::alerts}"></div>
 

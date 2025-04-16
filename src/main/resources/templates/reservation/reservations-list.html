@@ -25,7 +25,7 @@
     </div>
 
     <!-- Tabela z rezerwacjami -->
-    <div th:if="${passengers.size() > 0}">
+    <div th:if="${reservations.size() > 0}">
         <div th:replace="~{layouts/table :: table(${reservations}, ${columns}, '/reservations')}"></div>
     </div>
 

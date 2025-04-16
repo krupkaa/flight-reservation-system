@@ -12,4 +12,11 @@ public class ColumnNameUtils {
                 .map(Field::getName)
                 .collect(Collectors.toList());
     }
+
+    public static List<String> getColumnNamesSelectedMethod(Class<?> className, List<String> selectedFields) {
+        return Arrays.stream(className.getDeclaredFields())
+                .map(Field::getName)
+                .filter(selectedFields::contains)
+                .collect(Collectors.toList());
+    }
 }

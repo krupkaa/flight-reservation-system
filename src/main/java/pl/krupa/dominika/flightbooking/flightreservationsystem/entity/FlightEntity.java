@@ -31,8 +31,8 @@ public class FlightEntity {
     //there and back - T/P)
     private DirectionEnum direction;
 
-    @Column(name = "seat_number")
-    private String seatNumber;
+//    @Column(name = "seat_number")
+//    private String seatNumber;
 
     public enum DirectionEnum {
         THERE, BACK, THERE_AND_BACK
