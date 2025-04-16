@@ -10,9 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.PassengerMapper;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.model.FlightResponse;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerRequest;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerResponse;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.service.PassengerService;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.utils.ColumnNameUtils;
 
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class PassengerController {
     public String getAllPassengers(Model model) {
         List<PassengerResponse> passengers = passengerService.getAllPassengers();
         model.addAttribute("passengers", passengers);
-        model.addAttribute("columns", PassengerResponse.getColumnNamesMethod());
+        model.addAttribute("columns", ColumnNameUtils.getColumnNamesMethod(PassengerResponse.class));
         return "passenger/passengers-list";
     }
 
@@ -71,7 +73,7 @@ public class PassengerController {
         PassengerResponse passengerResponse = passengerService.getPassengerById(passengerId);
 
         model.addAttribute("passenger", passengerResponse);
-        model.addAttribute("columns", PassengerResponse.getColumnNamesMethod());
+        model.addAttribute("columns", ColumnNameUtils.getColumnNamesMethod(PassengerResponse.class));
 
         return "passenger/passenger-details";
     }

@@ -3,10 +3,7 @@ package pl.krupa.dominika.flightbooking.flightreservationsystem.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.entity.FlightEntity;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.FlightMapper;
-import pl.krupa.dominika.flightbooking.flightreservationsystem.mapper.PassengerMapper;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.FlightRequest;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.model.FlightResponse;
-import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerRequest;
-import pl.krupa.dominika.flightbooking.flightreservationsystem.model.PassengerResponse;
 import pl.krupa.dominika.flightbooking.flightreservationsystem.service.FlightService;
-import pl.krupa.dominika.flightbooking.flightreservationsystem.service.PassengerService;
+import pl.krupa.dominika.flightbooking.flightreservationsystem.utils.ColumnNameUtils;
 
 import java.util.List;
 
@@ -69,7 +63,7 @@ public class FlightController {
     public String getAllFlights(Model model) {
         List<FlightResponse> flights = flightService.getAllFlights();
         model.addAttribute("flights", flights);
-        model.addAttribute("columns", FlightResponse.getColumnNamesMethod());
+        model.addAttribute("columns", ColumnNameUtils.getColumnNamesMethod(FlightResponse.class));
         model.addAttribute("directions", FlightEntity.DirectionEnum.values());
         return "flight/flights-list";
     }
@@ -80,7 +74,7 @@ public class FlightController {
         FlightResponse flightResponse = flightService.getFlightById(flightId);
 
         model.addAttribute("flight", flightResponse);
-        model.addAttribute("columns", FlightResponse.getColumnNamesMethod());
+        model.addAttribute("columns", ColumnNameUtils.getColumnNamesMethod(FlightResponse.class));
 
         return "flight/flight-details";
     }
