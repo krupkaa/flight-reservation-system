@@ -17,11 +17,11 @@ public class FlightRequest {
     private String flightNumber;
 
     @NotBlank
-    @Size(max = 100)
+    @Size(max = 4)
     private String departureAirport;
 
     @NotBlank
-    @Size(max = 100)
+    @Size(max = 4)
     private String arrivalAirport;
 
     private long duration;  // Duration in minutes

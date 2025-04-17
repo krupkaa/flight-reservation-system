@@ -1,5 +1,6 @@
 package pl.krupa.dominika.flightbooking.flightreservationsystem.controller;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
@@ -53,14 +54,14 @@ public class ReservationController {
 
         try {
             ReservationResponse response = reservationService.createReservation(request);
-            mailService.sendMail(response.getPassengerEmail(), "RESERVATION FOR FLIGHT", "you do reservation");
             model.addAttribute("response", response);
+            mailService.sendMail(response.getPassengerEmail(), "RESERVATION FOR FLIGHT", makeReservationMailContent(response));
             redirectAttributes.addFlashAttribute("successMessage", "Reservation has been successfully added!");
             return "redirect:/reservations";
         } catch (FlightNotFoundException | PassengerNotFoundException | IllegalArgumentException | ValidationException e) {
             model.addAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Unexpected error occurred. Please try again.");
+            model.addAttribute("errorMessage", e.getMessage());
         }
         return "reservation/reservation-form";
     }
@@ -122,5 +123,11 @@ public class ReservationController {
             redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while deleting the reservation. Please try again");
         }
         return "redirect:/reservations";
+    }
+
+    private String makeReservationMailContent(ReservationResponse response) {
+        return String.format("Reservation number: %s, flight number: %s",
+                response.getReservationNumber(),
+                response.getFlightNumber());
     }
 }

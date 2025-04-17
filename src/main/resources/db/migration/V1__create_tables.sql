@@ -4,16 +4,15 @@ CREATE TABLE IF NOT EXISTS flights (
                          arrival_airport VARCHAR(4) NOT NULL,
                          flight_duration BIGINT NOT NULL,
                          flight_number VARCHAR(10) NOT NULL,
-                         direction VARCHAR(1) NOT NULL CHECK (direction IN ('T', 'B', 'T/P'))
+                         direction VARCHAR
 );
 
-CREATE TABLE IF NOT EXISTS flights (
-                         id BIGSERIAL PRIMARY KEY,
-                         departure_airport VARCHAR(4) NOT NULL,
-                         arrival_airport VARCHAR(4) NOT NULL,
-                         flight_duration BIGINT NOT NULL,
-                         flight_number VARCHAR(10) NOT NULL,
-                         direction VARCHAR(1) NOT NULL CHECK (direction IN ('T', 'B', 'T/P'))
+CREATE TABLE IF NOT EXISTS passengers (
+                            passenger_id BIGSERIAL PRIMARY KEY,
+                            first_name VARCHAR(50) NOT NULL,
+                            last_name VARCHAR(50) NOT NULL,
+                            email VARCHAR(100) NOT NULL UNIQUE,
+                            phone_number VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS reservations (

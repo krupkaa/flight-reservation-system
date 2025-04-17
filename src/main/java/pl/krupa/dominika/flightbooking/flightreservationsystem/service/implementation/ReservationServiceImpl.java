@@ -62,8 +62,8 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new FlightNotFoundException("Flight with number " + request.getFlightNumber() + " not found"));
 
         // Sprawdzenie czy pasażer istnieje
-        PassengerEntity passenger = passengerRepository.findById(request.getId())
-                .orElseThrow(() -> new PassengerNotFoundException("Passenger with ID " + request.getId() + " not found"));
+        PassengerEntity passenger = passengerRepository.findByEmail(request.getPassengerEmail())
+                .orElseThrow(() -> new PassengerNotFoundException("Passenger with email " + request.getPassengerEmail() + " not found"));
 
         selectedSeatValidation.validateSeatAvailability(request.getFlightNumber(), request.getSelectedSeat());
 

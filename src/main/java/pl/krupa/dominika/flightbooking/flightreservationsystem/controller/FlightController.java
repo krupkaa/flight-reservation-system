@@ -43,6 +43,7 @@ public class FlightController {
                                   RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("directions", FlightEntity.DirectionEnum.values());
+            model.addAttribute("response", new FlightResponse());
             return "flight/flight-form";
         }
 

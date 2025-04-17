@@ -25,7 +25,8 @@ public class FlightEntity {
     @Column(name = "flight_number", nullable = false, length = 10)
     private String flightNumber;
 
-    @Column(name = "direction", nullable = false, length = 3)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "direction", nullable = false)
     //there - T
     //back - B
     //there and back - T/P)

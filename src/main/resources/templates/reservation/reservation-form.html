@@ -16,18 +16,6 @@
         <form th:with="action=${reservation.id != null} ? '/reservations/edit/' + ${reservation.id} : '/reservations/create'"
               th:action="@{${action}}" method="post" th:object="${reservation}">
 
-            <!-- Reservation Number -->
-            <div class="form-group mb-3">
-                <label>
-                    Reservation Number <span class="text-danger">*</span>
-                </label>
-                <input type="text"
-                       th:field="*{reservationNumber}"
-                       th:classappend="${#fields.hasErrors('reservationNumber')} ? 'is-invalid'"
-                       class="form-control"
-                       required>
-                <div th:errors="*{reservationNumber}" class="invalid-feedback"></div>
-            </div>
 
             <!-- Flight Number -->
             <div class="form-group mb-3">
