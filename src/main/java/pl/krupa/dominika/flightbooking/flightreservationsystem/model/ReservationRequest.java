@@ -10,9 +10,9 @@ public class ReservationRequest {
 
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
-    private String reservationNumber;
+//    @NotBlank
+//    @Size(max = 20)
+//    private String reservationNumber;
 
     @NotBlank
     @Size(max = 20)
