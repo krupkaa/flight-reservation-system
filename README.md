@@ -1,8 +1,6 @@
 
 # Flight Reservation System
 
-**Recruitment Task – Development Department**
-
 ## Project Description
 A simple system for managing flight reservations, built in Java as a REST API.  
 The system supports CRUD operations for:
@@ -110,8 +108,6 @@ In the main project directory, you can find a `screens-documentation.docx` file 
 # Wersja Polska ↓
 
 # System Rezerwacji Lotów
-
-**Zadanie rekrutacyjne – Dział Developmentu**
 
 ## Opis Projektu
 Prosty system do zarządzania rezerwacjami lotów, zbudowany w Javie jako REST API.  
